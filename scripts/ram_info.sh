@@ -4,14 +4,14 @@ export LC_ALL=en_US.UTF-8
 
 # function for getting the refresh rate
 get_tmux_option() {
-  local option=$1
-  local default_value=$2
-  local option_value=$(tmux show-option -gqv "$option")
-  if [ -z $option_value ]; then
-    echo $default_value
-  else
-    echo $option_value
-  fi
+	local option=$1
+	local default_value=$2
+	local option_value=$(tmux show-option -gqv "$option")
+	if [ -z "$option_value" ]; then
+		echo "$default_value"
+	else
+		echo "$option_value"
+	fi
 }
 
 get_percent()
@@ -22,16 +22,16 @@ get_percent()
 			total_mem_gb=$(free -g | awk '/^Mem/ {print $2}')
 			used_mem=$(free -g | awk '/^Mem/ {print $3}')
 			total_mem=$(free -h | awk '/^Mem/ {print $2}')
-			if (( $total_mem_gb == 0)); then
+			if (( "$total_mem_gb" == 0)); then
 				memory_usage=$(free -m | awk '/^Mem/ {print $3}')
 				total_mem_mb=$(free -m | awk '/^Mem/ {print $2}')
-				echo $memory_usage\M\B/$total_mem_mb\M\B
-			elif (( $used_mem == 0 )); then
+				echo "$memory_usage"\M\B/"$total_mem_mb"\M\B
+			elif (( "$used_mem" == 0 )); then
 				memory_usage=$(free -m | awk '/^Mem/ {print $3}')
-				echo $memory_usage\M\B/$total_mem\G\B
+				echo "$memory_usage"\M\B/"$total_mem"\G\B
 			else
 				memory_usage=$(free -g | awk '/^Mem/ {print $3}')
-				echo $memory_usage\G\B/$total_mem\G\B
+				echo "$memory_usage"\G\B/"$total_mem"\G\B
 			fi
 		;;
 
@@ -40,14 +40,14 @@ get_percent()
 			# Get used memory blocks with vm_stat, multiply by 4096 to get size in bytes, then convert to MiB
 			used_mem=$(vm_stat | grep ' active\|wired ' | sed 's/[^0-9]//g' | paste -sd ' ' - | awk '{printf "%d\n", ($1+$2) * 4096 / 1048576}')
 			total_mem=$(system_profiler SPHardwareDataType | grep "Memory:" | awk '{print $2 $3}')
-			if (( $used_mem < 1024 )); then
-				echo $used_mem\M\B/$total_mem
+			if (( "$used_mem" < 1024 )); then
+				echo "$used_mem"\M\B/"$total_mem"
 			else
-				memory=$(($used_mem/1024))
-				echo $memory\G\B/$total_mem
+				memory=$(("$used_mem"/1024))
+				echo "$memory"\G\B/"$total_mem"
 			fi
 		;;
-		
+
 		FreeBSD)
 			# Looked at the code from neofetch
 			hw_pagesize="$(sysctl -n hw.pagesize)"
@@ -59,11 +59,11 @@ get_percent()
 			total_mem=$(($(sysctl -n hw.physmem) / 1024 / 1024))
 			used_mem=$((total_mem - free_mem))
 			echo $used_mem
-			if (( $used_mem < 1024 )); then
-				echo $used_mem\M\B/$total_mem
+			if (( "$used_mem" < 1024 )); then
+				echo "$used_mem"\M\B/$total_mem
 			else
-				memory=$(($used_mem/1024))
-				echo $memory\G\B/$total_mem
+				memory=$(("$used_mem"/1024))
+				echo "$memory"\G\B/$total_mem
 			fi
 		;;
 
@@ -79,7 +79,7 @@ main()
 	RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
 	ram_percent=$(get_percent)
 	echo "RAM $ram_percent"
-	sleep $RATE
+	sleep "$RATE"
 }
 
 #run main driver

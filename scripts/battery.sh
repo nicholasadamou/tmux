@@ -8,11 +8,11 @@ linux_acpi() {
     if [ ! -x "$(which acpi 2> /dev/null)" ];then
         case "$arg" in
             status)
-                cat $BAT/status
+                cat "$BAT"/status
             ;;
 
             percent)
-                cat $BAT/capacity
+                cat "$BAT"/capacity
             ;;
 
             *)
