@@ -26,7 +26,7 @@ main()
   show_location=$(get_tmux_option "@dracula-show-location" true)
   show_powerline=$(get_tmux_option "@dracula-show-powerline" false)
   show_flags=$(get_tmux_option "@dracula-show-flags" false)
-  show_left_icon=$(get_tmux_option "@dracula-show-left-icon" smiley)
+  show_left_icon=$(get_tmux_option "@dracula-show-left-icon" dollar)
   show_military=$(get_tmux_option "@dracula-military-time" false)
   show_timezone=$(get_tmux_option "@dracula-show-timezone" true)
   show_left_sep=$(get_tmux_option "@dracula-show-left-sep" )
@@ -55,8 +55,8 @@ main()
 
   # Handle left icon configuration
   case $show_left_icon in
-      smiley)
-          left_icon="☺ ";;
+      dollar)
+          left_icon="$ ";;
       session)
           left_icon="#S ";;
       window)
